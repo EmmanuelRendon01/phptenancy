@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Central\TenantController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,4 +15,7 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    // CRUD de Tenants (solo usuarios autenticados)
+    Route::resource('tenants', TenantController::class);
 });
