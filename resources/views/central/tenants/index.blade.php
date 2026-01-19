@@ -28,6 +28,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subdominio</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Plan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Suscripción</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
                         </tr>
                     </thead>
@@ -52,12 +53,25 @@
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <span
                                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                            {{ $tenant->plan === 'enterprise' ? 'bg-purple-100 text-purple-800' :
+                                                                                {{ $tenant->plan === 'enterprise' ? 'bg-purple-100 text-purple-800' :
                             ($tenant->plan === 'pro' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800') }}">
                                                         {{ ucfirst($tenant->plan) }}
                                                     </span>
                                                 </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    @if($tenant->subscribed('default'))
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                            Activa
+                                                        </span>
+                                                    @else
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                            Inactiva
+                                                        </span>
+                                                    @endif
+                                                </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                    <a href="{{ route('subscriptions.index', $tenant) }}"
+                                                        class="text-purple-600 hover:text-purple-900 mr-3">Suscripción</a>
                                                     <a href="{{ route('tenants.edit', $tenant) }}"
                                                         class="text-indigo-600 hover:text-indigo-900 mr-3">Editar</a>
                                                     <form action="{{ route('tenants.destroy', $tenant) }}" method="POST" class="inline">
@@ -72,7 +86,7 @@
                                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">
                                     No hay tenants registrados.
                                     <a href="{{ route('tenants.create') }}" class="text-indigo-600">Crear el primero</a>
                                 </td>
