@@ -24,7 +24,25 @@ Route::middleware([
 
     // Página principal del tenant
     Route::get('/', function () {
-        return 'Bienvenido al tenant: ' . tenant('id');
+        return view('tenant.dashboard');
+    })->name('tenant.dashboard');
+
+    // Rutas protegidas por suscripción
+    Route::middleware(['subscribed'])->group(function () {
+
+        // Gestión de Categorías
+        Route::get('/categories', \App\Livewire\Tenant\CategoryManager::class)
+            ->name('tenant.categories');
+
+        // Gestión de Productos
+        Route::get('/products', \App\Livewire\Tenant\ProductManager::class)
+            ->name('tenant.products');
     });
 
+    // Página de suscripción requerida
+    Route::get('/subscription-required', function () {
+        return view('tenant.subscription-required');
+    })->name('tenant.subscription.required');
+
 });
+
